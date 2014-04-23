@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Intro to SASS</title>
+    <link rel="stylesheet" href="styles/styles.css"/>
+  </head>
+  <body>
+    <article>
+      <section>
+        <h1> SASS Tips and Tricks</h1>
+      </section>
+      <section>
+        <h2>Please...</h2>
+        <p>Don't wait until the end - engage everyone!</p>
+      </section>
+      <section>
+        <h2>Goals</h2>
+        <ul>
+          <li>Speed up development</li>
+          <li>Cleaner, more expressive CSS</li>
+          <li>Show you some neat tricks</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Placeholders</h2>
+        <p>First of all, why?</p>
+        <table>
+          <tr>
+            <td>
+              <pre><code class="language-scss">.alert {
+  border-radius: 4px;
+  display: block;
+}
+
+.alert-success {
+  @extend .alert;
+  color: green;
+}
+
+.alert-warning {
+  @extend .alert;
+  color: red;
+}</code></pre>
+            </td>
+            <td>
+              <pre><code class="language-css">.alert, .alert-success, .alert-warning {
+  border-radius: 4px;
+  display: block;
+}
+
+.alert-success {
+  color: green;
+}
+
+.alert-warning {
+  color: red;
+}</code></pre>
+            </td>
+          </tr>
+        </table>
+        <p>Will we ever use <code>.alert</code> ?</p>
+      </section>
+      <section>
+        <h2>Placeholders</h2>
+        <h3>Rewritten as placeholders (%)</h3>
+        <table>
+          <tr>
+            <td>
+              <pre><code class="language-scss">%alert {
+  border-radius: 4px;
+  display: block;
+}
+
+.alert-success {
+  @extend %alert;
+  color: green;
+}
+
+.alert-warning {
+  @extend %alert;
+  color: red;
+}</code></pre>
+            </td>
+            <td>
+              <pre><code class="language-css">.alert-success, .alert-warning {
+  border-radius: 4px;
+  display: block;
+}
+
+.alert-success {
+  color: green;
+}
+
+.alert-warning {
+  color: red;
+}
+</code></pre>
+            </td>
+          </tr>
+        </table>
+      </section>
+      <section>
+        <h2>Placeholders</h2>
+        <h3>A better example?</h3>
+        <table>
+          <tr>
+            <td>
+              <pre><code class="language-scss">// no margin, no padding
+%mp0 {
+ margin: 0;
+ padding: 0;
+}
+
+.container {
+  @extend %mp0;
+}
+
+.my-list li {
+  @extend %mp0;
+  font-size: 1.25em;
+}</code></pre>
+            </td>
+            <td>
+              <pre><code class="language-css">.container, .my-list li {
+  margin: 0;
+  padding: 0;
+}
+
+.my-list li {
+  font-size: 1.25em;
+}</code></pre>
+            </td>
+          </tr>
+        </table>
+        <p>Can you think of a better one?</p>
+      </section>
+      <section>
+        <h2>Ampersand &amp;</h2>
+        <h3>Reference the parent selector</h3>
+        <table>
+          <tr>
+            <td>
+              <pre><code class="language-scss">li {
+  border-bottom: 1px solid $color-gray;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}</code></pre>
+            </td>
+            <td>
+              <pre><code class="language-css">li {
+  border-bottom: 1px solid #cccccc;
+}
+li:last-child {
+  border-bottom: none;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}</code></pre>
+            </td>
+          </tr>
+        </table>
+        <p>This is useful for other pseudo-elements, such as <code>:nth-child(even)</code></p>
+      </section>
+      <section>
+        <h2>Ampersand &amp;</h2>
+        <h3>Reference the parent selector</h3>
+        <p>A nice use-case.</p>
+        <table>
+          <tr>
+            <td>
+              <pre><code class="language-scss">h3 {
+  font-size: 24px;
+  
+  .ppc-page & {
+    font-size: 36px;
+  }
+}</code></pre>
+            </td>
+            <td>
+              <pre><code class="language-css">h3 {
+  font-size: 24px;
+}
+.ppc-page h3 {
+  font-size: 36px;
+}</code></pre>
+            </td>
+          </tr>
+        </table>
+        <p>Map styles for specific sections within your site</p>
+      </section>
+      <section>
+        <h2>Ampersand &amp;</h2>
+        <h3>Even cooler example</h3>
+        <pre><code class="language-markup">&lt;!--[if lt IE 7]&gt;      &lt;html class=&quot;no-js lt-ie9 lt-ie8 lt-ie7&quot;&gt; &lt;![endif]--&gt;
+&lt;!--[if IE 7]&gt;         &lt;html class=&quot;no-js lt-ie9 lt-ie8&quot;&gt; &lt;![endif]--&gt;
+&lt;!--[if IE 8]&gt;         &lt;html class=&quot;no-js lt-ie9&quot;&gt; &lt;![endif]--&gt;
+&lt;!--[if gt IE 8]&gt;&lt;!--&gt; &lt;html class=&quot;no-js&quot;&gt; &lt;!--&lt;![endif]--&gt;
+</code></pre>
+        <table>
+          <tr>
+            <td>
+              <pre><code class="language-scss">.super-title {
+  font-size: 32px;
+  
+  .lte-i9 & {
+    font-size: 36px;
+  }
+}</code></pre>
+            </td>
+            <td>
+              <pre><code class="language-css">.super-title {
+  font-size: 32px;
+}
+.lte-i9 .super-title {
+  font-size: 36px;
+}</code></pre>
+            </td>
+          </tr>
+        </table>
+        <p>Question: what's the catch with this approach?</p>
+      </section>
+      <section>
+        <h2>Mixins</h2>
+        <h3>Include styles in your selectors</h3>
+        <p>We were <strong>extending</strong> before. Sometimes we just want to include styles</p>
+        <p>Written by Dave Sellers</p>
+        <pre><code class="language-scss">@mixin image-2x($image) {
+  width: image-width($image)/2;
+  height: image-height($image)/2;
+  background-size: image-width($image)/2;
+}
+
+</code></pre>
+      </section>
+      <section>
+        <h2>Mixins</h2>
+        <h3>A retina image mixin</h3>
+        <pre><code style="font-size:0.5em; line-height: 0em" class="language-scss">@mixin image2x-retina($file, $type, $width, $height, $mod: '@2x') {
+  $fileName: $file + '.' + $type;
+  $retina: $file + $mod + '.' + $type;
+  
+  background-image: url($fileName);
+  
+  @media (-webkit-min-device-pixel-ratio: 1.5), (-moz-min-device-pixel-ratio: 1.5) {
+    & {
+      background-image: url($retina);
+      background-size: $width $height;
+    }
+  }
+}
+
+// Example
+#foo {
+  @include image2x-retina('foobar', 'png', 10px, 20px);
+  background: repeat;
+}
+</code></pre>
+        <p><a href="https://gist.github.com/ryanlewis/11231156">View output</a></p>
+      </section>
+      <section>
+        <h2>Lists and loops</h2>
+        <h3>Do iterations, or loop through lists</h3>
+        <p>Why? Use cases?</p>
+      </section>
+      <section>
+        <h2>List and loops</h2>
+        <p>Something Dave Sellers wrote</p>
+        <table>
+          <tr>
+            <td>
+              <pre><code style="font-size:0.5em; line-height: 0em" class="language-scss">@mixin image-2x($image) {
+  width: image-width($image)/2;
+  height: image-height($image)/2;
+  background-size: image-width($image)/2;
+}
+
+$icons: marker, pump, mail, tick;
+
+@each $icon in $icons {
+  .icon-#{$icon} {
+    position: absolute;
+    display: block;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    @include image-2x('2x/#{$icon}.png');
+  }
+}
+</code></pre>
+            </td>
+            <td>
+              <pre><code style="font-size:0.5em; line-height: 0em" class="language-scss">.icon-marker {
+  position: absolute;
+  display: block;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  width: 27px;
+  height: 45px;
+  background-size: 27px;
+}
+.icon-pump {
+  position: absolute;
+  display: block;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  width: 33px;
+  height: 41px;
+  background-size: 33px;
+}
+/* ... */
+</code></pre>
+            </td>
+          </tr>
+        </table>
+      </section>
+      <section>
+        <h2>A more complex example</h2>
+        <p><a href="http://codepen.io/ryanlewis/pen/xBJGA">Something I made earlier...</a></p>
+      </section>
+      <section>
+        <h2>A more complex example</h2>
+        <p>This is a SASS function that takes 3 arguments (one optional) and returns a number</p>
+        <pre><code class="language-scss">@function nth-origin($total, $n, $amount: 50px) {
+  $i: $n - 1;
+  $mid: ($total - 1) / 2;
+  $offset:  $i - $mid;
+  @return $offset * $amount * -1;
+}
+</code></pre>
+        <p>
+          This returns a number that is negative or positive, dependant on the
+          value of <code>$n</code> and <code>$total</code>
+          
+        </p>
+      </section>
+      <section>
+        <h2>A more complex example</h2>
+        <p>The result is then fed into the <code>transform-origin</code> compass mixin</p>
+        <pre><code class="language-scss">@include transform-origin(nth-origin($image-count, $i, 120px));</code></pre>
+        <p>Depending on the value of <code>$i</code>, the <code>transform-origin</code> will be different</p>
+      </section>
+      <section>
+        <h2>A more complex example</h2>
+        <h3>This output is then looped to produce different selectors</h3>
+        <table>
+          <tr>
+            <td>
+              <pre><code style="font-size: 0.5em" class="language-scss">$image-count: 6;
+img {
+  opacity:0;
+  @for $i from 1 through $image-count {
+    &:nth-of-type( #{$i} ) {
+      @include transform-origin(
+        nth-origin($image-count, $i, 120px)
+      );
+      @include animation(
+        fadeIn 1.5s 0.1s*$i forwards cubic-bezier(0,0.8,0.4,1)
+      );
+    }
+  }
+}</code></pre>
+            </td>
+            <td>
+              <pre><code style="font-size: 0.5em" class="language-scss">img {
+  opacity: 0;
+}
+img:nth-of-type(1) {
+  /* vendor prefixed */
+  transform-origin: 300px;
+  animation: fadeIn 1.5s 0.1s ...;
+}
+img:nth-of-type(2) {
+  /* vendor prefixed */
+  transform-origin: 180px;
+  animation: fadeIn 1.5s 0.2s ...;
+}
+/* ... */
+</code></pre>
+            </td>
+          </tr>
+        </table>
+      </section>
+      <section>
+        <h2>Fin!</h2>
+        <p>Can any of this be used in future projects?</p>
+      </section>
+    </article>
+    <script src="scripts/scripts.js"></script>
+  </body>
+</html>
